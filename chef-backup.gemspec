@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "chef-backup"
   spec.version       = ChefBackup::VERSION
   spec.authors       = ["Angelo Olivera"]
-  spec.email         = ["aolivera@mongodb.com"]
+  spec.email         = ["aolivera@gmail.com"]
   spec.summary       = %q{Back up Chef objects to a Git repository.}
   spec.homepage      = ""
   spec.license       = "GPL"
