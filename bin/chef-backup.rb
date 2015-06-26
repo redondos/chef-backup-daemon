@@ -102,7 +102,6 @@ objects.each do |type, klass|
     end
     path = "#{@options['path']}/#{type}/#{item}.json"
     save_file(path, data, @options[:verbose])
-    break
   end
 end
 
@@ -113,9 +112,7 @@ api_request("Chef::DataBag.list").keys.each do |bag|
     path = "#{@options[:path]}/data_bags/#{bag}/#{item}.json"
     data = api_request("Chef::DataBag.load('#{bag}/#{item}')")
     save_file(path, data, @options[:verbose])
-    break
   end
-  break
 end
 
 # update tree
