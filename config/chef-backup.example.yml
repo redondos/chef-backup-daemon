@@ -1,0 +1,6 @@
+chef-backup:
+  logfile: log/chef-backup.log
+  loglevel: INFO
+  path: backup
+  # repo_url: git@github.com:myrepo/chef-backup.git
+
