@@ -10,11 +10,11 @@ require 'chef-backup/version'
 
 module ChefBackup
   ObjectTypes = {
+    roles: Chef::Role,
+    environments: Chef::Environment,
     users: Chef::User,
     nodes: Chef::Node,
     clients: Chef::ApiClient,
-    roles: Chef::Role,
-    environments: Chef::Environment,
   }
 
   class Backup
@@ -25,27 +25,27 @@ module ChefBackup
       @logger = options.logger
     end
 
-    def nodes
-      self.common_object(__method__)
+    def backup_environments
+      self.backup_common(__method__.to_s.gsub(/.*_/, ''))
     end
 
-    def users
-      self.common_object(__method__)
+    def backup_roles
+      self.backup_common(__method__.to_s.gsub(/.*_/, ''))
     end
 
-    def clients
-      self.common_object(__method__)
+    def backup_users
+      self.backup_common(__method__.to_s.gsub(/.*_/, ''))
     end
 
-    def roles
-      self.common_object(__method__)
+    def backup_nodes
+      self.backup_common(__method__.to_s.gsub(/.*_/, ''))
     end
 
-    def environments
-      self.common_object(__method__)
+    def backup_clients
+      self.backup_common(__method__.to_s.gsub(/.*_/, ''))
     end
 
-    def common_object(type)
+    def backup_common(type)
 
       klass = ObjectTypes[type.to_sym]
       count = 0
@@ -70,7 +70,7 @@ module ChefBackup
       count
     end
 
-    def data_bags
+    def backup_data_bags
       count = 0
       STDERR.puts "Saving data bags..."
       api_request("Chef::DataBag.list").keys.each do |bag|
@@ -117,25 +117,24 @@ module ChefBackup
 
     def run
 
-
       @repo = self.configure_repo
-      # empty wo\king tree
+
+      # empty working tree
       @repo.clean
 
       # Back up all common types
       ObjectTypes.keys.each do |type|
-        total = self.send(type)
+        total = self.send('backup_' + type.to_s)
         @logger.info "total: #{total}"
       end
 
-      # And data bags
-      self.data_bags
+      # Back up data bags
+      self.backup_data_bags
 
       # update tree
-      r.update_all
+      @repo.update_all
     end
 
   end
 end
-
 
