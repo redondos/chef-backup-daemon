@@ -9,6 +9,7 @@ require 'ostruct'
 require 'optparse'
 
 require 'chef-backup'
+require 'chef-backup/daemon'
 
 begin
   config = YAML.load_file(File.join(execpath, 'config', 'chef-backup.yml'))['chef-backup']
@@ -47,5 +48,6 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-b = ChefBackup::Backup.new(@options)
-puts b.run
+b = ChefBackup::Daemon.new(@options)
+b.run
+
