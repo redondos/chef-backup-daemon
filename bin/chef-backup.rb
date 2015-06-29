@@ -49,5 +49,11 @@ OptionParser.new do |opts|
 end.parse!
 
 b = ChefBackup::Daemon.new(@options)
-b.run
+
+begin
+  b.run
+rescue Interrupt
+  @logger.info "received interrupt, exiting"
+end
+
 
