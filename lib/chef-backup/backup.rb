@@ -46,12 +46,13 @@ module ChefBackup
     end
 
     def backup_common(type)
-      @logger.info "backing up #{type}..."
+      msg = "backing up #{type}..."
+      @logger.info msg
+      STDERR.puts msg
 
       klass = ObjectTypes[type.to_sym]
       count = 0
 
-      STDERR.puts "Saving #{type}..."
       klass.list.keys.each do |item|
         data = api_request("#{klass}.load('#{item}')")
         if klass == Chef::Node
@@ -72,8 +73,11 @@ module ChefBackup
     end
 
     def backup_data_bags
+      msg = 'backing up data bags...'
+      @logger.info msg
+      STDERR.puts msg
+
       count = 0
-      STDERR.puts "Saving data bags..."
       api_request("Chef::DataBag.list").keys.each do |bag|
         api_request("Chef::DataBag.load('#{bag}')").keys.each do |item|
           path = "#{@options[:path]}/data_bags/#{bag}/#{item}.json"
