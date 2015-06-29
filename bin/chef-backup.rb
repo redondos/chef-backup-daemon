@@ -31,6 +31,9 @@ end
 @options.logger = @logger
 @options.verbose = false
 @options.path = config['path'] ? config['path'] : "#{ENV['PWD']}/backup"
+@options.repo_url = config['repo_url'] ? config['repo_url'] : nil
+@options.backup_frequency = config['frequency'] ? config['frequency'] : 30
+@options.backup_frequency *= 60 # minutes to seconds
 
 OptionParser.new do |opts|
   opts.banner = "Usage: #{ARGV[0]} [options]"
