@@ -7,6 +7,7 @@ module ChefBackup
       @backup = Backup.new(options)
       @logger = options['logger']
       @frequency = options['backup_frequency']
+      @logger.info "Starting daemon, backup path: #{options['path']}" if @logger
     end
 
 
