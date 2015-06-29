@@ -10,7 +10,11 @@ require 'optparse'
 
 require 'chef-backup'
 
-config = YAML.load_file(File.join(execpath, 'config', 'chef-backup.yml'))['chef-backup']
+begin
+  config = YAML.load_file(File.join(execpath, 'config', 'chef-backup.yml'))['chef-backup']
+rescue Errno::ENOENT
+  config = YAML.load_file(File.join('config', 'chef-backup.yml'))['chef-backup']
+end
 
 logfile = config['logfile'] ? config['logfile'] : File.join('log', File.basename(__FILE__) + '.log')
 
