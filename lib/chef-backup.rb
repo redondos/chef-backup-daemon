@@ -9,7 +9,8 @@ require 'chef/node'
 require 'chef-backup/version'
 
 module ChefBackup
-  ObjectTypes = {
+
+  ObjectTypes ||= {
     roles: Chef::Role,
     environments: Chef::Environment,
     users: Chef::User,
