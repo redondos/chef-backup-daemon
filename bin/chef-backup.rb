@@ -34,6 +34,7 @@ end
 @options.repo_url = config['repo_url'] ? config['repo_url'] : nil
 @options.backup_frequency = config['frequency'] ? config['frequency'] : 30
 @options.backup_frequency *= 60 # minutes to seconds
+@options.push = !config['push'].nil? ? config['push'] : true
 
 OptionParser.new do |opts|
   opts.banner = "Usage: #{ARGV[0]} [options]"

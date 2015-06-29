@@ -22,6 +22,7 @@ module ChefBackup
 
       @options = options
       @logger = options['logger']
+      @push = options['push']
     end
 
     def backup_environments
@@ -114,6 +115,8 @@ module ChefBackup
 
     def run
 
+      start_time = Time.new
+
       @logger.info "Starting backup" if @logger
 
       @repo = self.configure_repo
@@ -133,7 +136,17 @@ module ChefBackup
       # update tree
       @logger.info @repo.update_all
 
-      @logger.info "Backup successful" if @logger
+      # push to server
+      if @push
+        @logger.info 'pushing to repo'
+        @repo.push
+      end
+
+      duration = (Time.new - start_time).to_i
+
+      msg = "backup successful in #{duration} seconds"
+      @logger.info msg if @logger
+      STDERR.puts msg
     end
 
   end
