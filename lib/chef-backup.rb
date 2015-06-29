@@ -23,7 +23,7 @@ module ChefBackup
       Chef::Knife.new.configure_chef
 
       @options = options
-      @logger = options.logger
+      @logger = options['logger']
     end
 
     def backup_environments
@@ -92,22 +92,21 @@ module ChefBackup
       begin
         repo = Git::Base.open(path, {log: @logger})
       rescue ArgumentError
-        repo_url = config['repo_url']
+        repo_url = @options[:repo_url]
         unless repo_url
           msg = 'local git repository does not exist, please specify repo_url in the config file'
-          @logger.fatal msg
-          STDERR.puts msg
-          exit 15
+          @logger.fatal msg if @logger
+          raise Git::GitExecuteError, msg
         end
 
         msg = "local git repository does not exist, cloning from `#{repo_url}' into `#{path}'"
-        @logger.warn msg
+        @logger.warn msg if @logger
         STDERR.puts msg
 
         repo = Git.clone(repo_url, path)
       rescue
         msg = 'unable to create/clone repository'
-        @logger.fatal msg
+        @logger.fatal msg if @logger
         STDERR.puts msg
         STDERR.puts "Exception: #{$!}", $@
         exit 10
@@ -126,7 +125,7 @@ module ChefBackup
       # Back up all common types
       ObjectTypes.keys.each do |type|
         total = self.send('backup_' + type.to_s)
-        @logger.info "total: #{total}"
+        @logger.info "total: #{total}" if @logger
       end
 
       # Back up data bags
