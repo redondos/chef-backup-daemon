@@ -6,7 +6,7 @@ module ChefBackup
     def initialize(options)
       @backup = Backup.new(options)
       @logger = options['logger']
-      @frequency = (options['backup_frequency'])
+      @frequency = options['backup_frequency']
     end
 
 
@@ -31,8 +31,9 @@ module ChefBackup
     end
 
 
-    def run(frequency = 1800)
+    def run
 
+      frequency = @frequency
       while true
         @backup.run
         msg = "sleeping #{frequency}s"
