@@ -9,7 +9,6 @@ require 'ostruct'
 require 'optparse'
 
 require 'chef-backup'
-require 'chef-backup/daemon'
 
 begin
   config = YAML.load_file(File.join(execpath, 'config', 'chef-backup.yml'))['chef-backup']
