@@ -23,7 +23,7 @@ begin
   FileUtils.mkdir_p(File.dirname(logfile)) unless File.exists? File.dirname(logfile)
   @logger = Logger.new logfile
 rescue Errno::EACCES
-  STDERR.puts "permission denied creating logfile #{logfile}, exiting"
+  STDERR.puts "permission denied creating logfile #{logfile}"
 end
 
 @logger.level = config['loglevel'] ? Logger.const_get(config['loglevel']) : Logger::INFO

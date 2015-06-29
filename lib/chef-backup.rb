@@ -47,6 +47,7 @@ module ChefBackup
     end
 
     def backup_common(type)
+      @logger.info "backing up #{type}..."
 
       klass = ObjectTypes[type.to_sym]
       count = 0
@@ -107,15 +108,15 @@ module ChefBackup
       rescue
         msg = 'unable to create/clone repository'
         @logger.fatal msg if @logger
-        STDERR.puts msg
-        STDERR.puts "Exception: #{$!}", $@
-        exit 10
+        raise msg
       end
 
       repo
     end
 
     def run
+
+      @logger.info "Starting backup" if @logger
 
       @repo = self.configure_repo
 
@@ -132,7 +133,9 @@ module ChefBackup
       self.backup_data_bags
 
       # update tree
-      @repo.update_all
+      @logger.info @repo.update_all
+
+      @logger.info "Backup successful" if @logger
     end
 
   end

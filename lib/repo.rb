@@ -21,9 +21,9 @@ class Git::Base
     self.add(all: true)
 
     deleted = self.status.deleted.keys
-    self.remove(deleted)
+    self.remove(deleted) if deleted
 
-    self.commit(Time.now.strftime "Snapshot from %Y-%m-%d %H:%M:%S UTC (%a)")
+    self.commit(Time.now.strftime "Snapshot from %Y-%m-%d %H:%M:%S UTC (%a)").lines.first
   end
 end
 

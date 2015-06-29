@@ -10,11 +10,9 @@ def api_request(op)
 rescue Exception
   retry if (tries -= 1) > 0
 
-  msg = "failure executing #{op}, exiting"
+  msg = "failure executing #{op}"
   @logger.fatal msg
-  STDERR.puts msg
-  STDERR.puts "Exception: #{$!}", $@
-  exit 5
+  raise msg
 else
   data
 end
@@ -27,7 +25,7 @@ def save_file(path, data, verbose = false)
 
   dir = File.dirname(path)
   unless File.directory?(dir)
-    @logger.warn "creating directory #{dir}"
+    @logger.debug "creating directory #{dir}"
     FileUtils.mkdir_p(dir)
   end
 
@@ -38,18 +36,14 @@ def save_file(path, data, verbose = false)
   f.close
 
 rescue Errno::EACCES
-  msg = "permission denied saving file #{path}, exiting"
+  msg = "permission denied saving file #{path}"
   @logger.fatal msg
-  STDERR.puts msg
-  exit 6
+  raise msg
 rescue Exception
-  msg = "error saving file #{path}, exiting"
+  msg = "error saving file #{path}"
   @logger.fatal msg
-  STDERR.puts msg
-  STDERR.puts "Exception: #{$!}", $@
-  exit 7
+  raise msg
 else
   bytes
 end
-
 

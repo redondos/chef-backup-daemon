@@ -35,7 +35,7 @@ module ChefBackup
 
       while true
         @backup.run
-        msg = "sleeping #{frequency}"
+        msg = "sleeping #{frequency}s"
         @logger.info msg
         sleep frequency
       end
