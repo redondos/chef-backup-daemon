@@ -11,9 +11,11 @@ module ChefBackup
   ObjectTypes ||= {
     roles: Chef::Role,
     environments: Chef::Environment,
-    users: Chef::User,
     nodes: Chef::Node,
-    clients: Chef::ApiClient,
+    # Chef clients lack these permissions
+    # we'd need a proper Chef user to back up these objects
+    #clients: Chef::ApiClient,
+    #users: Chef::User,
   }
 
   class Backup
