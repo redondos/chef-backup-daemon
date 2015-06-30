@@ -8,6 +8,7 @@ def api_request(op)
   data = eval(op)
 
 rescue Exception
+  sleep 0.5
   retry if (tries -= 1) > 0
 
   msg = "failure executing #{op}"
