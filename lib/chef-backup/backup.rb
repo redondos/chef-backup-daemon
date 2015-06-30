@@ -1,6 +1,4 @@
 require 'git'
-require 'repo'
-require 'util'
 require 'chef/knife'
 require 'chef/api_client'
 require 'chef/user'
