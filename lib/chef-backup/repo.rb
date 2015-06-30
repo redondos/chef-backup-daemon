@@ -23,7 +23,11 @@ class Git::Base
     deleted = self.status.deleted.keys
     self.remove(deleted) if deleted.any?
 
-    self.commit(Time.now.strftime "Snapshot from %Y-%m-%d %H:%M:%S UTC (%a)").lines.first
+    if self.tainted?
+      self.commit(Time.now.strftime "Snapshot from %Y-%m-%d %H:%M:%S UTC (%a)").lines.first
+    else
+      'no changes'
+    end
   end
 end
 

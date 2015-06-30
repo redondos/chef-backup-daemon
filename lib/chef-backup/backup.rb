@@ -141,7 +141,7 @@ module ChefBackup
       @logger.info @repo.update_all
 
       # push to server
-      if @push
+      if @push and @repo.tainted?
         @logger.info 'pushing to repo'
         @repo.push
       end
