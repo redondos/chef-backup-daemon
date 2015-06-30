@@ -131,7 +131,7 @@ module ChefBackup
       # Back up all common types
       ObjectTypes.keys.each do |type|
         total = self.send('backup_' + type.to_s)
-        @logger.info "total: #{total}" if @logger
+        @logger.info "total #{type}: #{total}" if @logger
       end
 
       # Back up data bags
