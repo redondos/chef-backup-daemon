@@ -3,6 +3,8 @@
 execpath = File.expand_path(File.join(File.dirname(__FILE__), ".."))
 $:.unshift(File.join(execpath, "lib"))
 
+app = File.basename($0, File.extname($0))
+
 require 'yaml'
 require 'fileutils'
 require 'pathname'
@@ -20,6 +22,7 @@ require 'ostruct'
 @options.verbose = false
 @options.daemon = false
 @options.path = config['path'] ? config['path'] : "#{ENV['PWD']}/backup"
+@options.piddir = config['piddir'] ? config['piddir'] : "#{ENV['PWD']}"
 @options.repo_url = config['repo_url'] ? config['repo_url'] : nil
 @options.backup_frequency = config['frequency'] ? config['frequency'] : 30
 @options.backup_frequency *= 60 # minutes to seconds
@@ -48,9 +51,12 @@ require 'daemons'
 require 'logger'
 
 daemon_opts = {
-  :ontop      => !@options[:daemon],
-  :backtrace  => false,
-  :log_output => false,
+  ontop:       !@options[:daemon],
+  dir:         @options[:piddir],
+  dir_mode:    :normal,
+  app_name:    app,
+  backtrace:   false,
+  log_output:  false,
 }
 
 Daemons.daemonize(daemon_opts)
