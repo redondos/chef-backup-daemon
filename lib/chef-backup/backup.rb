@@ -141,7 +141,6 @@ module ChefBackup
 
       # update tree
       updated = @repo.update_all
-      @logger.info updated
 
       # push to server
       if updated
