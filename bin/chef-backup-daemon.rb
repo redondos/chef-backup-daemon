@@ -10,18 +10,22 @@ require 'fileutils'
 require 'pathname'
 
 begin
-  config = YAML.load_file(File.join(execpath, 'config', 'chef-backup.yml'))['chef-backup']
+  if File.exist? config_file = File.join(execpath, 'config', 'chef-backup.yml')
+    config = YAML.load_file(config_file)['chef-backup']
+  elsif File.exist? config_file = File.join('config', 'chef-backup.yml')
+    config = YAML.load_file(config_file)['chef-backup']
+  end
 rescue Errno::ENOENT
-  config = YAML.load_file(File.join('config', 'chef-backup.yml'))['chef-backup']
 end
+
+config = {} unless config
 
 require 'optparse'
 require 'ostruct'
-
 @options = OpenStruct.new
 @options.verbose = false
 @options.daemon = false
-@options.path = config['path'] ? config['path'] : "#{ENV['PWD']}/backup"
+@options.path = config.has_key?('path') ? config['path'] : "#{ENV['PWD']}/backup"
 @options.piddir = config['piddir'] ? config['piddir'] : "#{ENV['PWD']}"
 @options.repo_url = config['repo_url'] ? config['repo_url'] : nil
 @options.backup_frequency = config['frequency'] ? config['frequency'] : 30
