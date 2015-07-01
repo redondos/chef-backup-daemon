@@ -140,12 +140,19 @@ module ChefBackup
       @logger.info "total #{type}: #{total}" if @logger
 
       # update tree
-      @logger.info @repo.update_all
+      updated = @repo.update_all
+      @logger.info updated
 
       # push to server
-      if @push and @repo.tainted?
-        @logger.info 'pushing to repo'
-        @repo.push
+      if updated
+        @logger.info updated
+        if @push
+          @logger.info 'pushing to repo'
+          @repo.push
+        end
+
+      else
+        @logger.info 'no changes'
       end
 
       duration = (Time.new - start_time).to_i
