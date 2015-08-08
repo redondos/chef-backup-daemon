@@ -20,8 +20,8 @@ class Git::Base
     #untracked = repo.status.select {|obj| obj.untracked == true }.map { |obj| obj.path }
     self.add(all: true)
 
-    deleted = self.status.deleted.keys
-    self.remove(deleted) if deleted.any?
+    #deleted = self.status.deleted.keys
+    #self.remove(deleted) if deleted.any?
 
     if self.modified?
       self.commit(Time.now.strftime "Snapshot from %Y-%m-%d %H:%M:%S UTC (%a)").lines[1]
